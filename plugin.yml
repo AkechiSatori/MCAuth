@@ -1,0 +1,15 @@
+name: MCAuth
+main: mcauth.MCAuth
+version: 1.0.0
+authors: [Luohuayu]
+commands:
+  register:
+    description: Register command
+    usage: /register <password> <verifyPassword>
+    aliases:
+    - reg
+  login:
+    description: Login command
+    usage: /login <password>
+    aliases:
+    - l
