@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact name="MCAuth:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MCAuth</output-path>
+    <root id="root">
+      <element id="archive" name="MCAuth.jar">
+        <element id="module-output" name="MCAuth" />
+        <element id="file-copy" path="$PROJECT_DIR$/src/config.yml" />
+        <element id="file-copy" path="$PROJECT_DIR$/src/plugin.yml" />
+      </element>
+    </root>
+  </artifact>
+</component>
