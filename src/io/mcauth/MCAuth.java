@@ -1,5 +1,7 @@
 package io.mcauth;
 
+import io.mcauth.database.SQLite;
+import org.bukkit.block.data.type.Switch;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,8 +57,16 @@ public class MCAuth extends JavaPlugin {
 	}
 
 	public boolean initDB() {
-		Database db = new MySQL(ConfigManager.database_host, ConfigManager.database_port, ConfigManager.database_user,
-				ConfigManager.database_password, ConfigManager.database_db, ConfigManager.database_table);
+		switch (ConfigManager.database_type) {
+			case "MySQL":
+				db = new MySQL(ConfigManager.database_host, ConfigManager.database_port, ConfigManager.database_user,
+						ConfigManager.database_password, ConfigManager.database_db, ConfigManager.database_table);
+				break;
+			case "SQLite":
+				db = new SQLite(ConfigManager.database_table);
+				break;
+		}
+
 		try {
 			db.init();
 			this.db = db;

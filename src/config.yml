@@ -1,10 +1,11 @@
 Database:
-    Host: '127.0.0.1'
-    Port: 3306
-    User: 'root'
-    Password: ''
-    DB: 'minecraft'
-    Table: 'auth'
+    Type: 'SQLite' #MySQL
+#    Host: '127.0.0.1'
+#    Port: 3306
+#    User: 'root'
+#    Password: ''
+#    DB: 'minecraft'
+    Table: 'user'
 SessionEnable: true
 SessionExpireTime: 60
 LoginTimeout: 60

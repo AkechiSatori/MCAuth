@@ -15,6 +15,7 @@ public class ConfigManager {
 	public static String database_password;
 	public static String database_db;
 	public static String database_table;
+	public static String database_type;
 
 	public static boolean session_enable;
 	public static int session_expire_time;
@@ -31,6 +32,8 @@ public class ConfigManager {
 		database_password = config.getString("Database.Password");
 		database_db = config.getString("Database.DB");
 		database_table = config.getString("Database.Table");
+
+		database_type = config.getString("Database.Type");
 
 		session_enable = config.getBoolean("SessionEnable", true);
 		session_expire_time = config.getInt("SessionExpireTime", 60);

@@ -33,8 +33,16 @@ public class MySQL implements Database {
 				port, db);
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = DriverManager.getConnection(url, user, pass);
-		conn.createStatement().execute("CREATE TABLE IF NOT EXISTS `" + table
-				+ "` (`id` int(12) NOT NULL AUTO_INCREMENT,`name` varchar(32) NOT NULL, `uuid` varchar(40) NOT NULL,`password` varchar(255) NOT NULL,`realname` varchar(32) NOT NULL,`lastip` varchar(16) NOT NULL, `regtime` int(10) NOT NULL, `lastlogin` int(10) NOT NULL, PRIMARY KEY (`id`), KEY `name` (`name`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+		conn.createStatement().execute("CREATE TABLE IF NOT EXISTS `" + table + "` (" +
+				"`id` int(12) NOT NULL AUTO_INCREMENT," +
+				"`name` varchar(32) NOT NULL," +
+				"`uuid` varchar(40) NOT NULL," +
+				"`password` varchar(255) NOT NULL," +
+				"`realname` varchar(32) NOT NULL," +
+				"`lastip` varchar(16) NOT NULL," +
+				"`regtime` int(10) NOT NULL," +
+				"`lastlogin` int(10) NOT NULL," +
+				"PRIMARY KEY (`id`), KEY `name` (`name`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 		this.conn = conn;
 	}
 
