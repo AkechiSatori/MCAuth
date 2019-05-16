@@ -17,7 +17,12 @@ public class LoginCommand {
 		PlayerAuth auth = plugin.pm.getAuth(player.getName());
 		if (auth.isRegister()) {
 			if (args.length < 1) {
-				player.sendMessage("§c登录: /l <密码>");
+				player.sendMessage("§c登录: /login <密码>");
+				return;
+			}
+
+			if (auth.isAuth()) {
+				player.sendMessage("§3重复登录");
 				return;
 			}
 

@@ -18,7 +18,7 @@ public class RegisterCommand {
 		PlayerAuth auth = plugin.pm.getAuth(player.getName());
 		if (!auth.isRegister()) {
 			if (args.length < 2) {
-				player.sendMessage("§c注册: /reg <密码> <确认密码>");
+				player.sendMessage("§c注册: /register <密码> <确认密码>");
 				return;
 			}
 

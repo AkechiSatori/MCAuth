@@ -13,9 +13,9 @@ public class MessageService {
 				PlayerAuth auth = MCAuth.getPlugin().pm.getAuth(player.getName());
 				if (!auth.isAuth()) {
 					if (auth.isRegister()) {
-						player.sendMessage("§f请使用 /l <密码> 进行登录");
+						player.sendMessage("§f请使用 /login <密码> 进行登录");
 					} else {
-						player.sendMessage("§f请使用 /reg <密码> <确认密码> 进行注册");
+						player.sendMessage("§f请使用 /register <密码> <确认密码> 进行注册");
 					}
 				}
 			});
