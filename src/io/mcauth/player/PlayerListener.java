@@ -4,9 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 import io.mcauth.ConfigManager;
 import io.mcauth.MCAuth;
@@ -25,13 +23,27 @@ public class PlayerListener implements Listener {
 		if (auth != null) {
 			plugin.pm.addAuth(auth);
 		}
-
 	}
-
 	@EventHandler
-	public void onLogin(PlayerLoginEvent event) {
+	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		PlayerAuth auth = plugin.pm.getAuth(player.getName());
+		String player_ip = player.getAddress().getHostString();
+		int expire_time = ConfigManager.session_expire_time * 60;
+
+		String login_session_message = String.format("§d欢迎回来, §a%s", player.getName());
+		if (ConfigManager.session_enable == true) {
+			if (auth.getLastip().equals(player_ip) && (auth.getLastlogin() + expire_time) > Utils.getTimestamp()) {
+				player.sendMessage(login_session_message);
+			}
+		}
+	}
+	@EventHandler
+	public void onPlayerLogin(PlayerLoginEvent event) {
+		Player player = event.getPlayer();
+		PlayerAuth auth = plugin.pm.getAuth(player.getName());
+		String player_ip = event.getAddress().getHostAddress();
+		int expire_time = ConfigManager.session_expire_time * 60;
 		if (auth == null) {
 			auth = plugin.db.getAuth(player.getName());
 			if (auth != null) {
@@ -46,25 +58,29 @@ public class PlayerListener implements Listener {
 				event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "请使用正确大小写的用户名:\n" + auth.getRealname());
 				return;
 			}
-			if (ConfigManager.session_enable == true &&auth.getLastip().equals(event.getAddress().getHostAddress())
-					&& (auth.getLastlogin() + (ConfigManager.session_expire_time * 60)) > Utils.getTimestamp()) {
-				auth.setAuth(true);
-			} else {
-				Bukkit.getOnlinePlayers().forEach((p) -> {
-					if (p.getName().equalsIgnoreCase(player.getName())) {
-						event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "相同的用户名已在线!");
-						return;
-					}
-				});
+			Bukkit.getOnlinePlayers().forEach((p) -> {
+				if (p.getName().equalsIgnoreCase(player.getName())) {
+					event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "相同的用户名已在线!");
+					return;
+				}
+			});
+			if (ConfigManager.session_enable == true) {
+				if (auth.getLastip().equals(player_ip) && (auth.getLastlogin() + expire_time) > Utils.getTimestamp()) {
+					auth.setAuth(true);
+				}
 			}
 		}
-		auth.setLastip(event.getAddress().getHostAddress());
+		auth.setLastip(player_ip);
 		auth.setLastlogin(Utils.getTimestamp());
 	}
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
+	public void onPlayerQuit(PlayerQuitEvent event) {
 		plugin.pm.removeAuth(plugin.pm.getAuth(event.getPlayer().getName()));
 	}
 
+	@EventHandler
+	public void onPlayerKick(PlayerKickEvent event) {
+		plugin.pm.removeAuth(plugin.pm.getAuth(event.getPlayer().getName()));
+	}
 }
