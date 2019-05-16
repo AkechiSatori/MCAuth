@@ -10,6 +10,15 @@ public class PlayerAuth {
 	private int regtime;
 	private boolean register;
 	private boolean auth;
+	private int retry_count;
+
+	public int getRetryCount() {
+		return this.retry_count;
+	}
+
+	public void addRetryCount() {
+		this.retry_count ++;
+	}
 
 	public void setUUID(String uuid) {
 		this.uuid = uuid;

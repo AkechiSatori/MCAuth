@@ -32,6 +32,9 @@ public class PlayerListener implements Listener {
 		int expire_time = ConfigManager.session_expire_time * 60;
 
 		String login_session_message = String.format("§d欢迎回来, §a%s", player.getName());
+		String broadcast_message = String.format("§e%s §b加入了游戏", player.getName());
+		event.setJoinMessage(broadcast_message);
+
 		if (ConfigManager.session_enable == true) {
 			if (auth.getLastip().equals(player_ip) && (auth.getLastlogin() + expire_time) > Utils.getTimestamp()) {
 				player.sendMessage(login_session_message);

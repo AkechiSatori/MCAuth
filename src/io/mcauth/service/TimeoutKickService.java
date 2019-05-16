@@ -14,7 +14,7 @@ public class TimeoutKickService {
 				PlayerAuth auth = MCAuth.getPlugin().pm.getAuth(player.getName());
 				if (Utils.getTimestamp() - auth.getLastlogin() > ConfigManager.login_timeout) {
 					if (!auth.isAuth())
-						player.kickPlayer("登录超时");
+						player.kickPlayer("§c登录超时");
 				}
 			});
 		}, 20, 20);

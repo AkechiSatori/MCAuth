@@ -1,5 +1,6 @@
 package io.mcauth.command;
 
+import io.mcauth.ConfigManager;
 import org.bukkit.entity.Player;
 
 import io.mcauth.MCAuth;
@@ -21,6 +22,10 @@ public class LoginCommand {
 				return;
 			}
 
+			if (auth.getRetryCount() >= ConfigManager.wrong_password_retry) {
+				player.kickPlayer("§c密码错误次数过多");
+			}
+
 			if (auth.isAuth()) {
 				player.sendMessage("§3重复登录");
 				return;
@@ -31,6 +36,7 @@ public class LoginCommand {
 				plugin.db.updateSession(player.getName(), auth.getLastip(), auth.getLastlogin());
 				player.sendMessage("§a登录成功!");
 			} else {
+				auth.addRetryCount();
 				player.sendMessage("§c密码错误!");
 			}
 		} else {

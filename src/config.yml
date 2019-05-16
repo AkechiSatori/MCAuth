@@ -10,3 +10,4 @@ SessionEnable: true
 SessionExpireTime: 60
 LoginTimeout: 60
 MessageInterval: 3
+WrongPasswordRetry: 3

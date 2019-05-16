@@ -17,6 +17,7 @@ public class ConfigManager {
 	public static String database_table;
 	public static String database_type;
 
+	public static int wrong_password_retry;
 	public static boolean session_enable;
 	public static int session_expire_time;
 	public static int login_timeout;
@@ -32,7 +33,7 @@ public class ConfigManager {
 		database_password = config.getString("Database.Password");
 		database_db = config.getString("Database.DB");
 		database_table = config.getString("Database.Table");
-
+		wrong_password_retry = config.getInt("WrongPasswordRetry");
 		database_type = config.getString("Database.Type");
 
 		session_enable = config.getBoolean("SessionEnable", true);
