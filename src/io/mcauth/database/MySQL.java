@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import io.mcauth.MCAuth;
 import io.mcauth.player.PlayerAuth;
+import org.bukkit.Bukkit;
 
 public class MySQL implements Database {
 	private String host;
@@ -28,26 +30,34 @@ public class MySQL implements Database {
 	}
 
 	public void init() throws Exception {
-		String url = String.format(
-				"jdbc:mysql://%s:%s/%s?autoReconnect=true&characterEncoding=utf-8&encoding=utf-8&useUnicode=true", host,
-				port, db);
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn = DriverManager.getConnection(url, user, pass);
+		try {
+			String url = String.format(
+					"jdbc:mysql://%s:%s/%s?autoReconnect=true&characterEncoding=utf-8&encoding=utf-8&useUnicode=true", host,
+					port, db);
+			Connection conn = null;
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(url, user, pass);
+			String create_db = String.format("CREATE TABLE IF NOT EXISTS `%s` (" +
+					"`id` int(12) NOT NULL AUTO_INCREMENT," +
+					"`name` varchar(32) NOT NULL," +
+					"`uuid` varchar(40) NOT NULL," +
+					"`password` varchar(255) NOT NULL," +
+					"`realname` varchar(32) NOT NULL," +
+					"`lastip` varchar(16) NOT NULL," +
+					"`regtime` int(10) NOT NULL," +
+					"`lastlogin` int(10) NOT NULL," +
+					"PRIMARY KEY (`id`), KEY `name` (`name`))" +
+					"ENGINE=InnoDB DEFAULT CHARSET=utf8;", table);
 
-		String create_db = String.format("CREATE TABLE IF NOT EXISTS `%s` (" +
-				"`id` int(12) NOT NULL AUTO_INCREMENT," +
-				"`name` varchar(32) NOT NULL," +
-				"`uuid` varchar(40) NOT NULL," +
-				"`password` varchar(255) NOT NULL," +
-				"`realname` varchar(32) NOT NULL," +
-				"`lastip` varchar(16) NOT NULL," +
-				"`regtime` int(10) NOT NULL," +
-				"`lastlogin` int(10) NOT NULL," +
-				"PRIMARY KEY (`id`), KEY `name` (`name`))" +
-				"ENGINE=InnoDB DEFAULT CHARSET=utf8;", table);
-
-		conn.createStatement().execute(create_db);
-		this.conn = conn;
+			conn.createStatement().execute(create_db);
+			this.conn = conn;
+		} catch (Exception e) {
+			if (e instanceof SQLException) {
+				Bukkit.getLogger().info("Fail to connect MySQL Server, Got Error: " + e.getCause().toString());
+				throw e;
+			}
+			e.printStackTrace();
+		}
 	}
 
 	public PlayerAuth getAuth(String player) {

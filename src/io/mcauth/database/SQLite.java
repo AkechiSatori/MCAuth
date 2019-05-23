@@ -35,6 +35,10 @@ public class SQLite implements Database {
 
             this.conn = conn;
         } catch (Exception e) {
+            if (e instanceof SQLException) {
+                Bukkit.getLogger().info("Fail to connect SQLite Server, Got Error: " + e.getCause().toString());
+                throw e;
+            }
             e.printStackTrace();
         }
 
